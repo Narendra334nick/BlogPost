@@ -3,8 +3,10 @@ const app = express()
 const port = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongodb.net/test?retryWrites=true&w=majority/Blog',{
     useNewUrlParser: true,
@@ -74,8 +76,8 @@ app.post('/updateBlog',(req,res)=>{
     });
 });
 
-app.post('/blogDelete',(req,res)=>{
-    BlogPost.findByIdAndRemove({_id:req.body.id},err=>{
+app.post('/blogDelete/:item',(req,res)=>{
+    BlogPost.findByIdAndRemove({_id:req.params.item},err=>{
         if(err){
              console.log(err)
         }
