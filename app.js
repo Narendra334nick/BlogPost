@@ -76,8 +76,9 @@ app.post('/updateBlog',(req,res)=>{
     });
 });
 
-app.post('/blogDelete/:item',(req,res)=>{
-    BlogPost.findByIdAndRemove({_id:req.params.item},err=>{
+app.post('/blogDelete/:id',(req,res)=>{
+    const id = req.params.id;
+    BlogPost.findByIdAndRemove({_id:id},err=>{
         if(err){
              console.log(err)
         }
