@@ -18,7 +18,7 @@ mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongo
 var BlogPostSchema = new mongoose.Schema({
     name:String,
     password:String,
-    blog:String
+    blog:String,   
 });
 
 var BlogPost = mongoose.model('BlogPost',BlogPostSchema);
@@ -32,11 +32,28 @@ app.get('/', (req, res) => {
     });
 });
 
+app.post('/addBlog',(req,res)=>{
+    
+    var newItem = new BlogPost({
+        name:req.body.name,
+        blog:req.body.blog, 
+    });
+
+    BlogPost.create(newItem,function(err,BlogPost){
+        if(err) console.log(err)
+        else{
+            console.log('1 item inserted');
+        }
+    })
+    res.send({status:"success"});
+
+})
+
 app.post('/signup',(req,res)=>{
     
     var newItem = new BlogPost({
         name:req.body.name,
-        password:req.body.password
+        password:req.body.password,
     });
     BlogPost.create(newItem,function(err,BlogPost){
         if(err) console.log(err)
@@ -62,9 +79,9 @@ app.post('/login',function(req,res){
     });
 });
 
-app.post('/updateBlog',(req,res)=>{
+app.post('/updateBlog/:id',(req,res)=>{
     BlogPost.findOneAndUpdate(
-        {name:req.body.name},
+        {_id:req.params.id},
         {$set:{blog:req.body.blog}})
     .then(res=>{
         console.log("updated successfully");
