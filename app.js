@@ -45,7 +45,7 @@ app.post('/addBlog',(req,res)=>{
             console.log('1 item inserted');
         }
     })
-    res.send({status:"success"});
+    res.redirect('http://localhost:3000');
 
 })
 
