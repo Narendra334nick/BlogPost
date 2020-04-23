@@ -8,7 +8,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongodb.net/test?retryWrites=true&w=majority/Blog',{
+mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongodb.net/test?retryWrites=true&w=majority/',{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
@@ -38,6 +38,7 @@ app.post('/addBlog',(req,res)=>{
         name:req.body.name,
         blog:req.body.blog, 
     });
+    
 
     BlogPost.create(newItem,function(err,BlogPost){
         if(err) console.log(err)
@@ -45,7 +46,7 @@ app.post('/addBlog',(req,res)=>{
             console.log('1 item inserted');
         }
     })
-    res.redirect('http://localhost:3000');
+    res.send({status:"success"});
 
 })
 
