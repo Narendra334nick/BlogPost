@@ -80,9 +80,9 @@ app.post('/login',function(req,res){
     });
 });
 
-app.post('/updateBlog/:id',(req,res)=>{
+app.post('/updateBlog',(req,res)=>{
     BlogPost.findOneAndUpdate(
-        {_id:req.params.id},
+        {_id:req.body.name},
         {$set:{blog:req.body.blog}})
     .then(res=>{
         console.log("updated successfully");
