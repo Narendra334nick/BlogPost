@@ -8,23 +8,23 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongodb.net/test?retryWrites=true&w=majority/',{
+mongoose.connect('mongodb+srv://mongoDbNarendra:Narendra334@cluster0-cooyo.mongodb.net/test?retryWrites=true&w=majority',{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
     useCreateIndex: true
 });
 
-var BlogPostSchema = new mongoose.Schema({
+var thoughtSchema = new mongoose.Schema({
     name:String,
-    password:String,
-    blog:String,   
+    date:String,
+    blog:String   
 });
 
-var BlogPost = mongoose.model('BlogPost',BlogPostSchema);
+var thought = mongoose.model('thought',thoughtSchema);
 
 app.get('/', (req, res) => {
-    BlogPost.find({},(err,BlogList)=>{
+    thought.find({},(err,BlogList)=>{
         if(err) console.log(err);
         else{
             res.send({BlogList:BlogList});
@@ -34,13 +34,14 @@ app.get('/', (req, res) => {
 
 app.post('/addBlog',(req,res)=>{
     
-    var newItem = new BlogPost({
+    var newItem = new thought({
         name:req.body.name,
-        blog:req.body.blog, 
+        date:req.body.date,
+        blog:req.body.blog 
     });
     
 
-    BlogPost.create(newItem,function(err,BlogPost){
+    thought.create(newItem,function(err,BlogPost){
         if(err) console.log(err)
         else{
             console.log('1 item inserted');
@@ -50,38 +51,38 @@ app.post('/addBlog',(req,res)=>{
 
 })
 
-app.post('/signup',(req,res)=>{
+// app.post('/signup',(req,res)=>{
     
-    var newItem = new BlogPost({
-        name:req.body.name,
-        password:req.body.password,
-    });
-    BlogPost.create(newItem,function(err,BlogPost){
-        if(err) console.log(err)
-        else{
-            console.log('1 item inserted');
-        }
-    })
-    res.send({status:"success"});
-});
+//     var newItem = new BlogPost({
+//         name:req.body.name,
+//         password:req.body.password,
+//     });
+//     BlogPost.create(newItem,function(err,BlogPost){
+//         if(err) console.log(err)
+//         else{
+//             console.log('1 item inserted');
+//         }
+//     })
+//     res.send({status:"success"});
+// });
 
 
-app.post('/login',function(req,res){
+// app.post('/login',function(req,res){
 
-    BlogPost.findOne({name:req.body.name},(err,document)=>{
-        if(err) console.log(err)
-        else{
-            if(document.password === req.body.password){
-                res.send({status:"success"});
-            }else{
-                res.send({status:"wrong password"});
-            }
-        }
-    });
-});
+//     BlogPost.findOne({name:req.body.name},(err,document)=>{
+//         if(err) console.log(err)
+//         else{
+//             if(document.password === req.body.password){
+//                 res.send({status:"success"});
+//             }else{
+//                 res.send({status:"wrong password"});
+//             }
+//         }
+//     });
+// });
 
 app.post('/updateBlog',(req,res)=>{
-    BlogPost.findOneAndUpdate(
+    thought.findOneAndUpdate(
         {name:req.body.name},
         {$set:{blog:req.body.blog}})
     .then(res=>{
@@ -96,12 +97,14 @@ app.post('/updateBlog',(req,res)=>{
 
 app.post('/blogDelete/:id',(req,res)=>{
     const id = req.params.id;
-    BlogPost.findByIdAndRemove({_id:id},err=>{
+    thought.findByIdAndRemove({_id:id},err=>{
         if(err){
              console.log(err)
+        }else{
+            res.send({stat:"success"})
         }
     })
-    res.redirect('/');
+    
 })
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))

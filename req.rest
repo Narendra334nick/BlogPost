@@ -1,0 +1,24 @@
+POST http://localhost:5000/addBlog
+Content-Type: application/json
+
+{
+    "name":"nick",
+    "date":"19/09/9090",
+    "blog":"hello baby"
+}
+
+###
+GET http://localhost:5000/
+
+###
+POST http://localhost:5000/updateBlog
+Content-Type: application/json
+
+{
+    "name":"golu",
+    "blog":"hello baby updated"
+}
+###
+
+POST http://localhost:5000/blogDelete/5ea7f1666267450deea81bed
+Content-Type: application/json
